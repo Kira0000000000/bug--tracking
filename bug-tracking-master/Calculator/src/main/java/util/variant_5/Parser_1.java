@@ -60,36 +60,33 @@ public class Parser_1 {
     }
 
     // раскрыть скобки. Вместо них становится число
-    private String openBracketsAndCalculateExpression(String expression) {
-        // выражение читается с конца
-        int index = expression.length() - 1;
-        // индекс последней закрывающейся скобки
-        int lastCloseBracketIndex = 0;
-        int openedBracketsAmount = 0;
-        char currentChar;
-        while (0 <= index) {
-            // берем значение текущего символа
-            currentChar = expression.charAt(index);
-            if (currentChar == ')') {
-                openedBracketsAmount--;
-                if (openedBracketsAmount == 1) {
-                    lastCloseBracketIndex = index;
-                }
-            } else if (currentChar == '(') {
-                openedBracketsAmount--;
-                if (openedBracketsAmount == 0) {
-                    expression =
-                            // берем строку до выражения в скобках
-                            expression.substring(0, index) +
-                            // вычисляем выражение в скобках и подставляем
-                            calculate(expression.substring(index + 1, lastCloseBracketIndex)) +
-                            // подставляем конец выражения expression
-                            expression.substring(lastCloseBracketIndex + 1);
-                }
+   private String openBracketsAndCalculateExpression(String expression) {
+    int index = expression.length() - 1;
+    int lastCloseBracketIndex = 0;
+    int openedBracketsAmount = 0;
+    char currentChar;
+    
+    while (0 <= index) {
+        currentChar = expression.charAt(index);
+        
+        if (currentChar == ')') {
+            openedBracketsAmount++;
+            if (openedBracketsAmount == 1) {
+                lastCloseBracketIndex = index;
             }
-            index--;
+        } else if (currentChar == '(') {
+            openedBracketsAmount--;
+            if (openedBracketsAmount == 0) {
+                expression =
+                    expression.substring(0, index) +
+                    calculate(expression.substring(index + 1, lastCloseBracketIndex)) +
+                    expression.substring(lastCloseBracketIndex + 1);
+            }
         }
-        return expression;
+        index--;
+    }
+    
+    return expression;
     }
 
     // метод для расстановки приоритетов операций (сначала умножения и деление)
